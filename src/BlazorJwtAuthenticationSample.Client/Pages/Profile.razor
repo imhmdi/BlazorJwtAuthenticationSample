@@ -1,0 +1,29 @@
+﻿@page "/profile"
+@using System.Security.Claims
+
+@attribute [Authorize]
+
+<h1>Profile</h1>
+
+
+<br />
+<hr />
+<p>
+    User Name: @UserName
+</p>
+
+
+@code{
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+    private string UserName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthState;
+        var user = authState.User;
+
+        UserName = user.FindFirst(ClaimTypes.Name).Value;
+    }
+
+}

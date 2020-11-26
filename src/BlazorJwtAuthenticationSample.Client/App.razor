@@ -1,0 +1,34 @@
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />*@
+
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <text> Please wait, we are authorizing the user. </text>
+
+            </Authorizing>
+            <NotAuthorized>
+                @if (!context.User.Identity.IsAuthenticated)
+                {
+                    <RedirectToLogin />
+                }
+                else
+                {
+                    <text> You are not authorized to access this page. </text>
+                }
+            </NotAuthorized>
+        </AuthorizeRouteView>
+
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+
+        </CascadingAuthenticationState>
+
+    </NotFound>
+</Router>
